@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "Roscoe5113!",
+    "database": "workout_trackerdb",
+    "host": "localhost",
+    "port": 3306,
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "Roscoe5113!",
+    "database": "testdb",
+    "host": "localhost",
+    "dialect": "mysql",
+    "port": 3306,
+    "logging": false
+  },
+  "production": {
+    "use_env_variable": "JAWSDB_URL",
+    "dialect": "mysql"
+  }
+}
