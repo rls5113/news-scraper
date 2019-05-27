@@ -4,12 +4,45 @@
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/styles/styles.css" media="screen" title="no title" charset="utf-8">
-  <title>Home Page</title>
+  <link rel="stylesheet" href="/styles/styles.css" media="screen" charset="utf-8">
+  <title>Mongo News Scraper</title>
 </head>
 
 <body>
+    <div class="container-fluid">
+    <header>
+      <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <h1 class="navbar-brand text-center">Mongo Scraper</h1>
+          </div>
+          <ul class="nav nav-tabs justify-content-end">
+            <li class="nav-item">
+              <a class="nav-link text-light" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="#">Saved Articles</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light btn-lg btn-danger" href="/scrape">Scrape New Articles</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <div class="container-fluid">
+        <div class="jumbotron text-center background-img">
+            <div class="overlay">
+                <div class="caption">
+                    <h1 class="font-weight-bolder display-1 text-white">Mongo Scraper</h1>
+                    <h2 class="text-white font-italic">Washington Post Edition</h2>
+                </div>
+            </div>
+        </div>
+
+
   {{{body}}}
+  </div>
 </body>
 
 </html>

@@ -1,3 +1,17 @@
 .list-group-item {
-  line-height: 2.5;
+  /* line-height: 2.5; */
+}
+body {
+  /* background-image: url("/img/background-oldstand-large.jpg"); */
+  /* background-repeat: no-repeat; */
+  /* background-size: cover; */
+  /* font-family: Calibri, "Helvetica Neue", sans-serif; */
+}
+nav {
+   font-weight: bold; 
+}
+
+.background-img {
+  background-image: url("/img/background-globe-blue.jpg");
+  background-size: cover;
 }
