@@ -8,7 +8,7 @@ body {
   /* font-family: Calibri, "Helvetica Neue", sans-serif; */
 }
 nav {
-   font-weight: bold; 
+   font-size: bold; 
 }
 
 .background-img {
@@ -17,4 +17,11 @@ nav {
 }
 .card {
   margin: 8px;
+}
+button {
+  float: right;
+  margin: 5px;
+}
+a {
+  font-size: x-large;
 }

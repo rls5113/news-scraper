@@ -1,99 +1,82 @@
-// Get references to page elements
-var $exampleText = $("#example-text");
-var $exampleDescription = $("#example-description");
-var $submitBtn = $("#submit");
-var $exampleList = $("#example-list");
-
-// The API object contains methods for each kind of request we'll make
-var API = {
-  saveExample: function(example) {
-    return $.ajax({
-      headers: {
-        "Content-Type": "application/json"
-      },
-      type: "POST",
-      url: "api/examples",
-      data: JSON.stringify(example)
-    });
-  },
-  getExamples: function() {
-    return $.ajax({
-      url: "api/examples",
-      type: "GET"
-    });
-  },
-  deleteExample: function(id) {
-    return $.ajax({
-      url: "api/examples/" + id,
-      type: "DELETE"
-    });
-  }
-};
-
-// refreshExamples gets new examples from the db and repopulates the list
-var refreshExamples = function() {
-  API.getExamples().then(function(data) {
-    var $examples = data.map(function(example) {
-      var $a = $("<a>")
-        .text(example.text)
-        .attr("href", "/example/" + example.id);
-
-      var $li = $("<li>")
-        .attr({
-          class: "list-group-item",
-          "data-id": example.id
-        })
-        .append($a);
-
-      var $button = $("<button>")
-        .addClass("btn btn-danger float-right delete")
-        .text("ｘ");
-
-      $li.append($button);
-
-      return $li;
-    });
-
-    $exampleList.empty();
-    $exampleList.append($examples);
-  });
-};
-
-// handleFormSubmit is called whenever we submit a new example
-// Save the new example to the db and refresh the list
-var handleFormSubmit = function(event) {
+$(document).ready(function () {
+$(".save-article-btn").click(function(event) {
   event.preventDefault();
+  const button = $(this);
+  const id = button.attr("id");
+  $.ajax(`/save/${id}`, {
+      type: "PUT"
+  }).then(function() {
+      const alert = `
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      Your Article has been saved!
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      </button>
+      </div>`
+      button.parent().append(alert);
+      }
+  );
+});
 
-  var example = {
-    text: $exampleText.val().trim(),
-    description: $exampleDescription.val().trim()
-  };
+$(".delete-btn").click(function (event) {
+  event.preventDefault();
+  const id = $(this).attr("id");
+  $.ajax(`/remove/${id}`, {
+      type: "PUT"
+  }).then(function(){
+      location.reload();
+  })
+});
 
-  if (!(example.text && example.description)) {
-    alert("You must enter an example text and description!");
-    return;
-  }
-
-  API.saveExample(example).then(function() {
-    refreshExamples();
+    // event handler for opening the note modal
+    $(".note-btn").click(function (event) {
+      event.preventDefault();
+      const id = $(this).attr("data");
+      $('#article-id').text(id);
+      $('#save-note').attr('data', id);
+      $.ajax(`/articles/${id}`, {
+          type: "GET"
+      }).then(function (data) {
+          console.log(data);
+          $('.articles-available').empty();
+          if (data[0].note.length > 0){
+              data[0].note.forEach(v => {
+                  $('.articles-available').append($(`<li class='list-group-item'>${v.text}<button type='button' class='btn btn-danger btn-sm float-right btn-deletenote' data='${v._id}'>X</button></li>`));
+              })
+          }
+          else {
+              $('.articles-available').append($(`<li class='list-group-item'>No notes for this article yet</li>`));
+              console.log("No notes");
+          }
+      })
+      $('#note-modal').modal('toggle');
   });
 
-  $exampleText.val("");
-  $exampleDescription.val("");
-};
+  $(document).on('click', '.btn-deletenote', function (){
+    event.preventDefault();
+    // console.log($(this).attr("data"))
+    const id = $(this).attr("data");
+    // console.log(id);
+    $.ajax(`/note/${id}`, {
+        type: "DELETE"
+    }).then(function () {
+        $('#note-modal').modal('toggle');
+    });
+});
 
-// handleDeleteBtnClick is called when an example's delete button is clicked
-// Remove the example from the db and refresh the list
-var handleDeleteBtnClick = function() {
-  var idToDelete = $(this)
-    .parent()
-    .attr("data-id");
 
-  API.deleteExample(idToDelete).then(function() {
-    refreshExamples();
-  });
-};
+$("#save-note").click(function (event) {
+    event.preventDefault();
+    const id = $(this).attr('data');
+    const noteText = $('#note-input').val().trim();
+    $('#note-input').val('');
+    $.ajax(`/note/${id}`, {
+        type: "POST",
+        data: { text: noteText}
+    }).then(function (data) {
+        console.log(data)
+    })
+    $('#note-modal').modal('toggle');
+});
 
-// Add event listeners to the submit and delete buttons
-$submitBtn.on("click", handleFormSubmit);
-$exampleList.on("click", ".delete", handleDeleteBtnClick);
+});

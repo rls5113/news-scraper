@@ -17,58 +17,17 @@ module.exports = function(app) {
     
     db.Article.find({}, function(error, articles) {
 
-
       if(error) {
         console.log(error);
       } else {
-        console.log(articles);
+        // console.log(articles);
         res.render("index", {
           articles: articles
         });
       } 
-      // res.json(data);
     });
  
    });
-
-  // app.get("/scrape", function(req, res) {
-  //   console.log("\n***********************************\n" +
-  //   "Grabbing every thread name and link\n" +
-  //   "from WP webdev board:" +
-  //   "\n***********************************\n");
-  //   axios.get("https://www.washingtonpost.com")
-  //   .then((response) => {
-  //       let $ = cheerio.load(response.data);
-  //       // let results = [];
-  //       $("div.headline").each((i, element) => {
-  //         console.log(i);
-  //         // console.log(element);
-  //         let headline = $(element).text();
-  //         // console.log(headline);
-  //         let link = $(element).children("a").attr("href");
-  //         if(link == undefined)  return true;
-          
-  //         db.articles.insert({
-  //           src: "washington post",
-  //           headline: headline,
-  //           link: link
-  //         }, (err, inserted) => {
-  //           if(err) {
-  //             console.log("Mongo Insert Error: ",err);
-  //           }
-  //           else {
-  //             console.log("inserted: ",inserted);
-  //           }
-  //         });
-
-  //     });
-  //   });
-  //   console.log("Scrape Complete");
-  //   res.redirect("/");
-  // });
-
-
-
 
   app.get("/scrape", function(req, res) {
 
@@ -100,33 +59,80 @@ module.exports = function(app) {
           })
           .catch(function(err) {
             console.log("ERROR:",err);
+            // return res.json(err);
           });
 
       });
    
     });
-    // const timeout = setTimeout(() => {
-    //   console.log("timing out...");
-    // },4000);
-    // clearTimeout(timeout);
+    const timeout = setTimeout(() => {
+      console.log("timing out...");
+    },10000);
+    clearTimeout(timeout);
     console.log("Scrape Complete");
     res.redirect("/");
     // res.send("scrape completed");
   });
+  
+  app.put("/save/:id", (req,res) => {
+    db.Article.findOneAndUpdate({_id: req.params.id}, {isSaved: true})
+    .then((data) => {
+      res.json(data);
+    })
+    .catch( (err) => { 
+      res.json(err);
+    });
+  }); 
 
+  app.put("/remove/:id", (req,res) => {
+    db.Article.findOneAndUpdate({_id: req.params.id}, {isSaved: false})
+    .then((data) => {
+      res.json(data);
+    })
+    .catch( (err) => { 
+      res.json(err);
+    });
+  }); 
 
+  app.get("/saved", (req, res) => {
+    db.Article.find({isSaved: true})
+        .then(function (retrievedArticles) {
+             res.render("saved", {articles: retrievedArticles});
+        })
+        .catch(function (err) {
+            // If an error occurred, send it to the client
+            res.json(err);
+        });
+  });
+  
+  app.get("/articles/:id", function (req, res) {
+    console.log(req.params.id);
+    db.Article.find({ _id: req.params.id })
+        .populate({
+            path: 'text',
+            model: 'Note'
+        })
+        .then(function (dbArticle) {
+          console.log(req.params.id);
+          res.json(dbArticle);
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
+  });
 
-
-
-
-
-  // Load example page and pass in an example by id
-  app.get("/example/:id", function(req, res) {
-    // db.Example.findOne({ where: { id: req.params.id } }).then(function(dbExample) {
-    //   res.render("example", {
-    //     example: dbExample
-    //   });
-    // });
+  app.post("/note/:id", function (req, res) {
+    // Create new note and pass the req.body to the entry
+    db.Note.create(req.body)
+        .then(function (dbNote) {
+            return db.Article.findOneAndUpdate({ _id: req.params.id }, {$push: { note: dbNote._id }}, { new: true });
+        })
+        .then(function (dbArticle) {
+            res.json(dbArticle);
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
   });
 
   // Render 404 page for any unmatched routes - do not put any routes below this wildcard 

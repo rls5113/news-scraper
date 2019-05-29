@@ -1,0 +1,91 @@
+<div id="saved">
+    <div class="container-fluid">
+    <header>
+      <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <h1 class="navbar-brand text-center">Saved Articles</h1>
+          </div>
+          <ul class="nav nav-tabs justify-content-end">
+            <li class="nav-item">
+              <a class="nav-link text-light" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-light" href="/saved">Saved Articles</a>
+            </li>
+            
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <div class="container-fluid">
+        <div class="jumbotron text-center background-img">
+            <div class="overlay">
+                <div class="caption">
+                    <h1 class="font-weight-bolder display-1 text-white">Saved Articles</h1>
+                    <h2 class="text-white font-italic">Your saved Articles</h2>
+                </div>
+            </div>
+        </div>
+    <div class="row">
+      <div class="col-md-12">
+        {{#if articles}}
+        {{#each articles}}
+          <div class="card w-90">
+                <div class="card-header text-white bg-primary">
+                    <a href={{link}} target="_blank" class="text-white">
+                        <h2>{{headline}}</h2>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                       {{blurb}}
+                    </p>
+                    <button data="{{_id}}" class="btn btn-primary note-btn" data-toggle="modal" data-target="#note-modal">Save Note</button>
+                    <button data="{{_id}}" class="btn btn-danger delete-btn">Delete Article</button>
+                </div>
+            </div>
+        {{/each}}
+        {{else}}
+            <div class="card text-white bg-warning w-90 p-1">
+                <div class="card-body text-center">
+                    Uh oh. Looks like we don't have any saved articles
+                </div>
+            </div>
+        {{/if}}
+
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="note-modal" tabindex="-1" role="dialog" aria-labelledby="successMessage" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Notes for Article <span id="article-id"></span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <ul class="list-group list-group-flush articles-available">
+                    </ul>
+                </div>
+                <br/>
+                <div class="form-group">
+                    <label for="note-input" class="sr-only">Enter Note Here</label>
+                    <textarea class="form-control" id="note-input" rows="3" placeholder="New Note"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="save-note">Save Note</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="/js/index.js"></script>
