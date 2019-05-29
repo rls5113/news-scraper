@@ -15,3 +15,6 @@ nav {
   background-image: url("/img/background-globe-blue.jpg");
   background-size: cover;
 }
+.card {
+  margin: 8px;
+}

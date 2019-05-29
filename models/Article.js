@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ArticleSchema = new Schema({
-    title: {
+    headline: {
         type: String,
         required: true,
         unique: true
@@ -11,7 +11,12 @@ const ArticleSchema = new Schema({
     link: {
         type: String,
         required: true,
-        unique: true
+        unique: false
+    },
+    blurb: {
+        type: String,
+        required: true,
+        unique: false
     },
     isSaved: {
         type: Boolean,

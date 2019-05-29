@@ -4,6 +4,7 @@ var exphbs = require("express-handlebars");
 var cheerio = require("cheerio");
 var axios = require("axios");
 var mongoose = require("mongoose");
+const logger = require("morgan");
 
 var app = express();
 var PORT = process.env.PORT || 3000;
@@ -29,7 +30,7 @@ mongoose.connect(MONGODB_URI);
 // Routes
 require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
-
+app.use(logger("dev"));
 // var syncOptions = { force: false };
 
 // If running a test, set syncOptions.force to true
@@ -50,8 +51,8 @@ require("./routes/htmlRoutes")(app);
 // });
 
 
-app.listen(3000, function() {
-  console.log("App running on port 3000!");
+app.listen(8080, function() {
+  console.log("App running on port 8080!");
 });
 
 
