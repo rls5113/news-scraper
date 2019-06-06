@@ -2,7 +2,7 @@ const db = require("../models");
 const axios = require("axios");
 const cheerio = require("cheerio");
 // const logger = require("morgan");
-// const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
 // const mongojs = require("mongojs");
 // const databaseUrl = "newsscraper";
@@ -11,6 +11,11 @@ const cheerio = require("cheerio");
 // db.on("error", (error) => {
 //   console.log("Database error: ",error);
 // });
+
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsscraper"
+mongoose.connect(MONGODB_URI);
+
+
 module.exports = function(app) {
   // Load index page
   app.get("/", function(req, res) {
@@ -135,6 +140,20 @@ module.exports = function(app) {
         });
   });
 
+  app.delete("/note/:id", function (req, res) {
+    db.Note.findByIdAndRemove({ _id: req.params.id })
+        .then(function (dbNote) {
+
+            return db.Article.findOneAndUpdate({ note: req.params.id }, { $pullAll: [{ note: req.params.id }]});
+        })
+        .then(function (dbArticle) {
+            // If update success, send Article back to the client
+            res.json(dbArticle);
+        })
+        .catch(function (err) {
+            res.json(err);
+        });
+});
   // Render 404 page for any unmatched routes - do not put any routes below this wildcard 
   app.get("*", function(req, res) {
     res.render("404");

@@ -36,11 +36,12 @@ $(".delete-btn").click(function (event) {
       $('#save-note').attr('data', id);
       $.ajax(`/articles/${id}`, {
           type: "GET"
-      }).then(function (data) {
-          console.log(data);
+      }).then(function (article) {
+          console.log(article);
           $('.articles-available').empty();
-          if (data[0].note.length > 0){
-              data[0].note.forEach(v => {
+          if (article[0].note.length > 0){
+              article[0].note.forEach(v => {
+                console.log(v);
                   $('.articles-available').append($(`<li class='list-group-item'>${v.text}<button type='button' class='btn btn-danger btn-sm float-right btn-deletenote' data='${v._id}'>X</button></li>`));
               })
           }
