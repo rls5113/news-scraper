@@ -7,7 +7,7 @@ var mongoose = require("mongoose");
 const logger = require("morgan");
 
 var app = express();
-// var PORT = process.env.PORT || 3000;
+var PORT = process.env.PORT || 3000;
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsscraper"
 
 // Middleware
@@ -33,8 +33,8 @@ require("./routes/htmlRoutes")(app);
 app.use(logger("dev"));
 
 
-app.listen(8080, function() {
-  console.log("App running on port 8080!");
+app.listen(PORT, function() {
+  console.log(`App running on port ${PORT}!`);
 });
 
 
