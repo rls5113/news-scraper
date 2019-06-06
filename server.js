@@ -9,7 +9,6 @@ const logger = require("morgan");
 var app = express();
 // var PORT = process.env.PORT || 3000;
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsscraper"
-mongoose.connect(MONGODB_URI);
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -24,7 +23,6 @@ app.engine(
   })
 );
 app.set("view engine", "handlebars");
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsscraper";
 
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
