@@ -2,7 +2,7 @@ const db = require("../models");
 const axios = require("axios");
 const cheerio = require("cheerio");
 // const logger = require("morgan");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
 // const mongojs = require("mongojs");
 // const databaseUrl = "newsscraper";
@@ -12,8 +12,6 @@ const mongoose = require("mongoose");
 //   console.log("Database error: ",error);
 // });
 
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsscraper"
-mongoose.connect(MONGODB_URI);
 
 
 module.exports = function(app) {
