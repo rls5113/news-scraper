@@ -1,5 +1,6 @@
 $(document).ready(function () {
 $(".save-article-btn").click(function(event) {
+   console.log("in save article");
   event.preventDefault();
   const button = $(this);
   const id = button.attr("id");

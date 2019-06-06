@@ -67,7 +67,7 @@ module.exports = function(app) {
     // res.send("scrape completed");
   });
   
-  app.put("/save/:id", (req,res) => {
+  app.put(`/save/:id`, (req,res) => {
     db.Article.findOneAndUpdate({_id: req.params.id}, {isSaved: true})
     .then((data) => {
       res.json(data);
