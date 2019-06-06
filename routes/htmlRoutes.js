@@ -1,16 +1,6 @@
 const db = require("../models");
 const axios = require("axios");
 const cheerio = require("cheerio");
-// const logger = require("morgan");
-// const mongoose = require("mongoose");
-
-// const mongojs = require("mongojs");
-// const databaseUrl = "newsscraper";
-// const collections = ["articles","notes"];
-// const db = mongojs(databaseUrl, collections);
-// db.on("error", (error) => {
-//   console.log("Database error: ",error);
-// });
 
 
 
