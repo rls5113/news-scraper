@@ -12,7 +12,7 @@ $(document).ready(function () {
        // event handler for opening the note modal
        $(".note-btn").click(function (event) {
         event.preventDefault();
-        console.log(event);
+        console.log(event); 
         const id = $(this).attr("data");
         console.log(this);
         $("#article-id").text(id);
